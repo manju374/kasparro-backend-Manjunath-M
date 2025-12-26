@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    # We force the Database URL here so it cannot be missed
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/kasparro
+    command: python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=kasparro
+
+volumes:
+  postgres_data:
