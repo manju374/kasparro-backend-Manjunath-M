@@ -124,5 +124,6 @@ kasparro-backend/
 ├── docker-compose.yml       # Infrastructure
 ├── Dockerfile               # Build instructions
 ├── historical_data.csv      # Dummy Data
-├── README.md                # Documentation (Creating this now)
+├── run.sh                   # Startup Script
+├── README.md                # Documentation
 └── requirements.txt         # Dependencies
