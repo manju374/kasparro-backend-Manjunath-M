@@ -1,15 +1,15 @@
-from fastapi import FastAPI, HTTPException
-from sqlalchemy import text
-from app.core.database import engine
+from fastapi import FastAPI
+from app.api import routes
+from app.core.database import engine, Base
 
-app = FastAPI()
+# Create Tables on startup (failsafe)
+Base.metadata.create_all(bind=engine)
 
-@app.get("/health")
-def health():
-    try:
-        with engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
-        return {"status": "healthy", "database": "connected"}
-    except Exception as e:
-        print("HEALTH CHECK ERROR:", repr(e))
-        raise HTTPException(status_code=500, detail="Database connection failed")
+app = FastAPI(title="Kasparro Backend")
+
+# --- CRITICAL FIX: Include the API Routes ---
+app.include_router(routes.router)
+
+@app.get("/")
+def read_root():
+    return {"status": "Kasparro Backend is Running"}
